@@ -1,6 +1,7 @@
 import { useState } from 'react'  
 import User from './components/User/User'
 import Menu from './components/Menu/Menu'
+import Login from './components/Login/Login'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
@@ -10,9 +11,9 @@ function App() {
 
   return (
     <>
-      <h1>Hello it's meee</h1>
       {/* <User/> */}
-      <Menu/>
+      <Menu/><br/>
+      <Login/>
     </>
   )
 }
