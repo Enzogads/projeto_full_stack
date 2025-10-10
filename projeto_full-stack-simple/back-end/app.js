@@ -6,7 +6,7 @@ const pool = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'senai',
-    database: 'api_node'
+    database: 'senai'
 })
 
 app.get("/", (req,res) => {
@@ -100,6 +100,41 @@ app.put("/usuarios/:id", async(req,res) => {
             [body.nome, body.idade, id]
         )
         res.status(200).send("Usuário atualizado", results)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post("/logs", async (req, res)=> {
+    try {
+        const { body } = req;
+        const [results] = await pool.query(
+        'INSERT INTO lgs (categoria,horas_trabalhadas,linha_de_codigo, bugs_corrigidos) VALUES (?,?,?,?)',
+        [body.categoria,
+        body.horas_trabalhadas,
+        body.linha_de_codigo,
+        body.bugs_corrigidos
+        ]
+        );
+
+        const [logCriado] = await pool.query(
+            "Select * from lgs WHERE id=?",
+            results.insertId
+        ) 
+
+        return res.status(201).json(logCriado)
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.get("/logs", async (req, res) => {
+    try {
+        const [results] = await pool.query(
+            'SELECT * FROM lgs'
+        );
+        res.send(results);
     } catch (error) {
         console.log(error)
     }
