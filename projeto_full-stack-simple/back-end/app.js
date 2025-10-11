@@ -131,9 +131,28 @@ app.post("/logs", async (req, res)=> {
 
 app.get("/logs", async (req, res) => {
     try {
+        const { query } = req;
+
+        const pagina = Number(query.pagina) - 1
+        const quantidade = Number(query.quantidade)
+        const offset = pagina * query.quantidade
+
         const [results] = await pool.query(
-            'SELECT * FROM lgs'
+            `SELECT * FROM lgs LIMIT ?
+            OFFSET ?;`, [quantidade, offset]
         );
+
+        res.send(results);
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get("/logs/categorias", async (req,res) => {
+    try {
+        const [results] = await pool.query(
+            `SELECT DISTINCT(categoria) FROM lgs`
+        )
         res.send(results);
     } catch (error) {
         console.log(error)
