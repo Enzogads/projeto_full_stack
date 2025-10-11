@@ -19,6 +19,25 @@ CREATE TABLE lgs(
     bugs_corrigidos INT
 );
 
+CREATE TABLE `like`(
+	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    log_id INT,
+    FOREIGN KEY (log_id) REFERENCES lgs (id),
+    user_id INT,
+	FOREIGN KEY (user_id) REFERENCES usuario (id)
+);
+
+INSERT INTO `like` (log_id, user_id) VALUES (1, 1), (2,2), (3,3);
+
+INSERT INTO usuario (nome, email, cpf, ativo, data_cadastro, nivel)
+VALUES 
+    ('Carlos', 'carlos.oliveira@example.com', '987.654.321-01', 4, NOW(), 4),
+  ('João da Silva', 'joao.silva@example.com', '123.456.789-00', 1, NOW(), 2),
+  ('Maria Oliveira', 'maria.oliveira@example.com', '987.654.321-00', 1, NOW(), 1),
+  ('Ana Souza', 'ana.souza@example.com', '321.654.987-00', 1, NOW(), 3);
+  
+SELECT DISTINCT(categoria) FROM lgs;
+
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Desenvolvimento de Gameplay', 22, 1850, 2);
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Arte e Design', 30, 45, 0);
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Correção de Bugs', 8, 90, 7);
@@ -818,3 +837,4 @@ INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos)
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Sonoplastia', 9, 0, 0);
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Roteiro e Narrativa', 24, 14, 0);
 INSERT INTO lgs (categoria, horas_trabalhadas, linha_de_codigo, bugs_corrigidos) VALUES ('Desenvolvimento de Gameplay', 39, 2550, 5);
+

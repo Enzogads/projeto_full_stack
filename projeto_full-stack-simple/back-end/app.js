@@ -159,6 +159,36 @@ app.get("/logs/categorias", async (req,res) => {
     }
 })
 
+app.post("/likes", async (req,res) => {
+    try {
+        const { body } = req;
+        const [ results ] = await pool.query(
+            'INSERT INTO `like` (log_id, user_id) VALUES (?, ?)',
+            [
+                body.log_id,
+                body.user_id
+            ]
+        )
+        const [likeCriado] = await pool.query(
+            "SELECT * FROM `like` WHERE id=?", results.insertId
+        )
+        res.status(201).json(likeCriado)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get("/likes", async (req, res) => {
+    try {
+        const [results] = await pool.query(
+            "SELECT * FROM `like`"
+        )
+        res.send(results)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 app.listen(3000, () => {
     console.log(`Servidor rodando na porta: http://localhost:3000`)
 });
