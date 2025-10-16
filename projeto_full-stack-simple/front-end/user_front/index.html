@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User_Login</title>
+
+    <link rel="stylesheet" href="../style/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css" integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js" integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.bundle.min.js" integrity="sha512-HvOjJrdwNpDbkGJIG2ZNqDlVqMo77qbs4Me4cah0HoDrfhrbA+8SBlZn1KrvAQw7cILLPFJvdwIgphzQmMm+Pw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid col-md-8">
+            <img src="/projeto_full-stack-simple/front-end/images/LeleLele.jpg" alt="Logo" width="36" height="36"
+              class="d-inline-block align-text-top">
+            <a class="navbar-brand" href="#">DevHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Projetos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Comunidade</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Recursos</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="container-fluid col-md-4 justify-content-end">
+            <a href="#"></a>
+            <img src="/projeto_full-stack-simple/front-end/images/stupib.jpg" width="36" height="36">
+          </div>
+        </nav>
+      </header>
+      
+    <div class="container">
+        <form id="frmLogin">
+            <h3>Login</h3>
+            <form>
+                <div class="mb-3">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input type="email" class="form-control" id="email">
+                </div>
+                <div class="mb-3">
+                  <label for="senha" class="form-label">Senha</label>
+                  <input type="password" class="form-control" id="senha">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </form>
+    </div>
+    
+
+</body>
+<script>
+
+    document.getElementById('frmLogin').addEventListener('submit', function(event){
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+
+        const url = "http://localhost:3000/login";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({email, senha})
+        })
+        .then((res) => {
+            if(!res.ok)
+                alert("Erro ao fazer login");
+            return res.json();
+        }).then((data) => {
+            if(data)
+                return alert("Login bem sucedido!")
+        })
+        .catch((error) => console.log(error))
+
+    });
+
+</script>
+</html>
