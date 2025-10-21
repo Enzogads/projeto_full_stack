@@ -25,7 +25,7 @@ app.get("/usuarios", async (req, res) => {
 app.get("/usuarios/:id", async (req, res) => {
   const { id } = req.params;
   const [results] = await pool.query(
-    "SELECT * FROM usuario WHERE idusuario=?",
+    "SELECT * FROM usuario WHERE id=?",
     id
   );
   res.send(results);
@@ -35,12 +35,12 @@ app.post("/usuarios", async (req, res) => {
   try {
     const { body } = req;
     const [results] = await pool.query(
-      "INSERT INTO usuario (nome,idade) VALUES (?,?)",
-      [body.nome, body.idade]
+      "INSERT INTO usuario (nome,idade, email, senha) VALUES (?,?, ?, ?)",
+      [body.nome, body.idade, body.email, body.senha]
     );
 
     const [usuarioCriado] = await pool.query(
-      "Select * from usuario WHERE idusuario=?",
+      "Select * from usuario WHERE id=?",
       results.insertId
     );
 
@@ -54,7 +54,7 @@ app.delete("/usuarios/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const [results] = await pool.query(
-      "DELETE FROM usuario WHERE idusuario=?",
+      "DELETE FROM usuario WHERE id=?",
       id
     );
     res.status(200).send("Usuário deletado!", results);
@@ -68,7 +68,7 @@ app.put("/usuarios/:id", async (req, res) => {
     const { id } = req.params;
     const { body } = req;
     const [results] = await pool.query(
-      "UPDATE usuario SET `nome` = ?, `idade` = ? WHERE idusuario = ?; ",
+      "UPDATE usuario SET `nome` = ?, `idade` = ? WHERE id = ?; ",
       [body.nome, body.idade, id]
     );
     res.status(200).send("Usuario atualizado", results);
@@ -128,30 +128,12 @@ app.get("/logs", async (req, res) => {
   const offset = pagina * quantidade
 
   const [results] = await pool.query(`
-    SELECT 
-	lgs.id,
-	lgs.categoria,
-    lgs.horas_trabalhadas,
-    lgs.linhas_codigo,
-    lgs.bugs_corrigidos,
-    COUNT(devhub.like.id_log) AS likes,
-	COUNT(devhub.comment.id_log) AS comments
-FROM
-	devhub.lgs
+   SELECT lgs.id, lgs.categoria, lgs.horas_trabalhadas, lgs.linhas_codigo, lgs.bugs_corrigidos, lgs.id_user, (devhub.like.id_log) AS likes FROM lgs 
 LEFT JOIN devhub.like
 ON devhub.like.id_log = devhub.lgs.id
-
-LEFT JOIN devhub.comment
-ON devhub.comment.id_log = devhub.lgs.id
-GROUP BY 
-	lgs.id,
-    lgs.categoria,
-    lgs.horas_trabalhadas,
-    lgs.linhas_codigo,
-    lgs.bugs_corrigidos
-ORDER BY devhub.lgs.id asc
-LIMIT ?
-OFFSET ?;
+GROUP BY lgs.id, lgs.categoria, lgs.horas_trabalhadas, lgs.linhas_codigo, lgs.bugs_corrigidos, lgs.id_user
+ORDER BY devhub.lgs.id ASC;
+;
     `, [quantidade, offset]);
   res.send(results);
 });
@@ -161,12 +143,13 @@ app.post("/logs", async (req, res) => {
   try {
     const { body } = req;
     const [results] = await pool.query(
-      "INSERT INTO lgs(categoria, horas_trabalhadas, linhas_codigo, bugs_corrigidos) VALUES (?, ?, ?, ?)",
+      "INSERT INTO lgs(categoria, horas_trabalhadas, linhas_codigo, bugs_corrigidos, id_user) VALUES (?, ?, ?, ?, ?)",
       [
         body.categoria,
         body.horas_trabalhadas,
         body.linhas_codigo,
         body.bugs_corrigidos,
+        body.id_user
       ]
     );
     const [logCriado] = await pool.query(
@@ -208,6 +191,20 @@ app.post("/likes", async (req, res) => {
   }
 });
 
+app.delete("/likes", async (req, res) => {
+  try {
+  const { query } =  req;
+  const id_log = Number(query.id_log)
+  const id_user = Number(query.id_user)
+  const [results] = await pool.query(
+    "DELETE FROM `like` WHERE id_log=? AND id_user=?",
+    [id_log, id_user]
+  );
+  res.status(200).send("Like retirado com sucesso!", results)
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
 app.listen(3000, () => {
