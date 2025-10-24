@@ -77,6 +77,21 @@ app.put("/usuarios/:id", async (req, res) => {
   }
 });
 
+//metricas usuário
+app.get("/metricas-usuario/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [ results ] = await pool.query(
+      `
+      SELECT sum(horas_trabalhadas) AS "horas_trabalhadas", count(id) AS "total_logs", sum(bugs_corrigidos) AS "bugs_corrigidos" FROM lgs WHERE id_user = ?;
+      `, id
+    );
+    res.send(results)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 // REGISTRO E LOGIN
 app.post("/registrar", async (req, res) => {
   try {
