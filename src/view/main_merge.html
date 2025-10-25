@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+        integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+        integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.bundle.min.js"
+        integrity="sha512-HvOjJrdwNpDbkGJIG2ZNqDlVqMo77qbs4Me4cah0HoDrfhrbA+8SBlZn1KrvAQw7cILLPFJvdwIgphzQmMm+Pw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="../style/main.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+            <div class="container-fluid">
+                <h1 class="navbar-brand" href="#">DevHub</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            </div>
+    </nav>
+
+    <main>
+        <div class="container d-flex">
+            <div class="col-md-3 mt-3">
+                <div id="card-user">
+                </div>
+            </div>
+    
+            <div class="col-md-9 mt-3">
+                <div id="get-log"></div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    const url = "http://localhost:3000/metricas-usuario/1"
+    fetch(url, {
+        method: 'get',
+        headers: {
+            "Content-Type": "application/json", 
+            "Accept": "application/json"
+        },
+    })
+    .then((res => {
+        if(!res.ok){
+            console.log(res)
+        }
+        return res.json();
+    })).then((data) => {
+        console.log(data)
+        let metricasHTML = "";
+        if(data && Array.isArray(data)){
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                console.log(element.metrica);
+                metricasHTML += `
+                    <h2 class= "text-center mt-3 mb-3">
+                    ${element.nome}<br>
+                    </h2>
+
+                        <p class= "text-center fw-bold">
+                            Horas Trabalhadas: ${element.horas_trabalhadas}
+                            </p>
+                        <p class="text-center fw-bold">
+                            Total de Bugs: ${element.total_logs} 
+                            </p>
+                        <p class="text-center fw-bold">
+                            Total Bugs: ${element.bugs_corrigidos} 
+                            
+                            </p>
+                    </div>
+                            `;
+            }
+    
+        }
+        document.getElementById("card-user").innerHTML = metricasHTML;
+    })
+    .catch((error) => console.log("ERROR: ", error))
+    
+    
+    
+    </script>
+
+</html>

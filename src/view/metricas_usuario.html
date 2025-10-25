@@ -17,11 +17,8 @@
         <div id="metrica"></div>
     </div>
 </body>
-
-</body>
 <script>
 const url = "http://localhost:3000/metricas-usuario/1"
-
 fetch(url, {
     method: 'get',
     headers: {
@@ -38,14 +35,13 @@ fetch(url, {
     console.log(data)
     let metricasHTML = "";
     if(data && Array.isArray(data)){
-        for (let index = 0; index < array.length; index++) {
+        for (let index = 0; index < data.length; index++) {
             const element = data[index];
             console.log(element.metrica);
             metricasHTML += `<div style="border-radius: 4px; border: 1px #cacaca solid; padding: 20px;">
-                     Id do usuário: ${element.user_id} <br>
                     <div style="display: flex; justify-content: column; ">
-                         Total Horas Trabalhadas: ${element.horas_trabalhadas}
-                         Total Linhas Totais de Logs: ${element.total_Logs}
+                         Total Horas Trabalhadas: ${element.horas_trabalhadas} <br>
+                         Total Linhas Totais de Logs: ${element.total_logs} <br>
                          Total Bugs Corrigidos: ${element.bugs_corrigidos}
                      </div>
                      </div>`;

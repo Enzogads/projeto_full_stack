@@ -1,3 +1,4 @@
+
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
@@ -83,7 +84,7 @@ app.get("/metricas-usuario/:id", async (req, res) => {
     const { id } = req.params;
     const [ results ] = await pool.query(
       `
-      SELECT sum(horas_trabalhadas) AS "horas_trabalhadas", count(id) AS "total_logs", sum(bugs_corrigidos) AS "bugs_corrigidos" FROM lgs WHERE id_user = ?;
+      SELECT sum(horas_trabalhadas) AS "horas_trabalhadas", count(lgs.id) AS "total_logs", sum(bugs_corrigidos) AS "bugs_corrigidos", nome FROM lgs INNER JOIN usuario ON lgs.id_user = usuario.id WHERE id_user = ?;
       `, id
     );
     res.send(results)

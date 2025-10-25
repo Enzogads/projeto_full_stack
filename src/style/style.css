@@ -32,3 +32,11 @@ a:hover {
 input {
     width: 300px !important;
 }
+
+main .card-user{
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 500px;
+}
+

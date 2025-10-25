@@ -1,0 +1,19 @@
+input {
+    width: 300px !important;
+}
+
+main #card-user{
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 500px;
+    background-color: aliceblue;
+}
+
+body{
+    background-color: rgb(241, 241, 241);
+}
+
+.navbar{
+    border-bottom: 1px solid rgb(226, 226, 226);
+}
