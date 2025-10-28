@@ -56,105 +56,78 @@
     </main>
 </body>
 <script>
-    const url = "http://localhost:3000/metricas-usuario/1"
+    const url = "http://localhost:3000/metricas-usuario/1";
+    
     fetch(url, {
-        method: 'get',
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      let metricasHTML = "";
+    
+      if (Array.isArray(data)) {
+        for (const element of data) {
+          metricasHTML += `
+            <h2 class="text-center mt-3 mb-5">${element.nome}</h2>
+            <div class="container">
+              <p class="text-center fw-bold">Horas Trabalhadas: ${element.horas_trabalhadas}</p>
+              <p class="text-center fw-bold">Total de Logs: ${element.total_logs}</p>
+              <p class="text-center fw-bold">Total Bugs: ${element.bugs_corrigidos}</p>
+            </div>
+          `;
+          document.getElementById("card-user").innerHTML = metricasHTML;
+        }
+      }
+    
+    
+      // Agora busca os logs
+      const urlGetLog = "http://localhost:3000/logs";
+    
+      return fetch(urlGetLog, {
+        method: "GET",
         headers: {
-            "Content-Type": "application/json", 
-            "Accept": "application/json"
-        },
-    })
-    .then((res => {
-        if(!res.ok){
-            console.log(res)
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         }
-        return res.json();
-    })).then((data) => {
-        console.log(data)
-        let metricasHTML = "";
-        if(data && Array.isArray(data)){
-            for (let index = 0; index < data.length; index++) {
-                const element = data[index];
-                console.log(element.metrica);
-                metricasHTML += `
-                    <h2 class= "text-center mt-3 mb-5">
-                    ${element.nome}<br>
-                    </h2>
-
-                        <div class="container">
-                            <p class= "text-center fw-bold">
-                                Horas Trabalhadas: ${element.horas_trabalhadas}
-                                </p>
-                            <p class="text-center fw-bold">
-                                Total de Logs: ${element.total_logs} 
-                                </p>
-                            <p class="text-center fw-bold">
-                                Total Bugs: ${element.bugs_corrigidos} 
-                                </p>
-                                </div>
-                                `;
-             document.getElementById("card-user").innerHTML = metricasHTML;
-            }
-    
-            const urlGetLog =  "http://localhost:3000/logs"
-
-            fetch(urlGetLog, {
-                method: "GET",
-                headers: {
-                    "Content-Type":"application/json",
-                    "Accept": "application/json"
-                } 
-            })
-            .then((res => {
-                if(!res.ok){
-                    console.log(res)
-                }return res.json()
-            })).then((data => {
-                console.log(data)
-                let logsHTML = ""
-                if(data && Array.isArray(data)){
-                    for(let log = 0; log < data.length; log++){
-                        const element = data[log];
-                        console.log(log);
-                        logsHTML += `
-
-                            <div class="log container-fluid">
-                            <div class="row">
-                            <div class="col-md-3 d-flex justify-content-center">
-                            <h5>ID Usuário: <br>${element.id_user}</h5>
-                            </div>
-
-                            <div class="cardinhos col-md-9 mt-3 d-flex justify-content-between">
-
-                            <div class="border-2 p-2 text-center w-25 fw-bold">
-                            <p>Horas Trabalhadas:</p><br>${element.horas_trabalhadas}
-                            </div>
-
-                            <div class="border-2 p-2 w-25 text-center fw-bold">
-                            <p>Linhas de Código:</p><br>${element.linhas_codigo}
-                            </div>
-
-                            <div class="border-2 p-2 w-25 fw-bold text-center">
-                            <p>Bugs Corrigidos:</p><br>${element.bugs_corrigidos}
-                            </div>
-
-                            </div>
-
-                            </div>
-                            
-                            </div>
-                        `
-                        document.getElementById("get-log").innerHTML=logsHTML;
-                    }
-                }
-            }))
-            
-        }
+      });
     })
-    .catch((error) => console.log("ERROR: ", error))
+    .then(res => res.json())
+    .then(data => {
+      let logsHTML = "";
     
+      if (Array.isArray(data)) {
+        for (const element of data) {
+          logsHTML += `
+            <div class="log container-fluid">
+              <div class="row">
+                <div class="col-md-3 d-flex justify-content-center">
+                  <h5>ID Usuário: <br>${element.id_user}</h5>
+                </div>
+                <div class="col-md-9 mt-3 d-flex justify-content-between">
+                  <div class="border-2 p-2 text-center w-25 fw-bold">
+                    <p>Horas Trabalhadas:</p><br>${element.horas_trabalhadas}
+                  </div>
+                  <div class="border-2 p-2 w-25 text-center fw-bold">
+                    <p>Linhas de Código:</p><br>${element.linhas_codigo}
+                  </div>
+                  <div class="border-2 p-2 w-25 fw-bold text-center">
+                    <p>Bugs Corrigidos:</p><br>${element.bugs_corrigidos}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          document.getElementById("get-log").innerHTML = logsHTML;
+        }
+      }
     
-    
+    })
+    .catch(error => console.error("ERROR:", error));
     </script>
+    
 
 </html>
