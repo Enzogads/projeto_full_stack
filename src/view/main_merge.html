@@ -22,9 +22,10 @@
 <body>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-            <div class="container-fluid">
-                <h1 class="navbar-brand" href="#">DevHub</a>
+    <div class="container-fluid d-flex">
+        <img src="../style/images/bobEsponjaManeiro.jpg" alt="">
+        <div class="container-fluid">
+                <h1 class="navbar-brand" href="#">DevHub /<br><span> Moggando.</span></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +42,15 @@
             </div>
     
             <div class="col-md-9 mt-3">
-                <div id="get-log"></div>
+                <div id="get-log">
+                    <div class="cria-log container d-flex justify-content-center mt-2">
+                        <button type="button" class="btn btn-primary w-50">+ Criar Log</button>
+                    </div>
+
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -68,26 +77,79 @@
                 const element = data[index];
                 console.log(element.metrica);
                 metricasHTML += `
-                    <h2 class= "text-center mt-3 mb-3">
+                    <h2 class= "text-center mt-3 mb-5">
                     ${element.nome}<br>
                     </h2>
 
-                        <p class= "text-center fw-bold">
-                            Horas Trabalhadas: ${element.horas_trabalhadas}
-                            </p>
-                        <p class="text-center fw-bold">
-                            Total de Bugs: ${element.total_logs} 
-                            </p>
-                        <p class="text-center fw-bold">
-                            Total Bugs: ${element.bugs_corrigidos} 
-                            
-                            </p>
-                    </div>
-                            `;
+                        <div class="container">
+                            <p class= "text-center fw-bold">
+                                Horas Trabalhadas: ${element.horas_trabalhadas}
+                                </p>
+                            <p class="text-center fw-bold">
+                                Total de Logs: ${element.total_logs} 
+                                </p>
+                            <p class="text-center fw-bold">
+                                Total Bugs: ${element.bugs_corrigidos} 
+                                </p>
+                                </div>
+                                `;
+             document.getElementById("card-user").innerHTML = metricasHTML;
             }
     
+            const urlGetLog =  "http://localhost:3000/logs"
+
+            fetch(urlGetLog, {
+                method: "GET",
+                headers: {
+                    "Content-Type":"application/json",
+                    "Accept": "application/json"
+                } 
+            })
+            .then((res => {
+                if(!res.ok){
+                    console.log(res)
+                }return res.json()
+            })).then((data => {
+                console.log(data)
+                let logsHTML = ""
+                if(data && Array.isArray(data)){
+                    for(let log = 0; log < data.length; log++){
+                        const element = data[log];
+                        console.log(log);
+                        logsHTML += `
+
+                            <div class="log container-fluid">
+                            <div class="row">
+                            <div class="col-md-3 d-flex justify-content-center">
+                            <h5>ID Usuário: <br>${element.id_user}</h5>
+                            </div>
+
+                            <div class="cardinhos col-md-9 mt-3 d-flex justify-content-between">
+
+                            <div class="border-2 p-2 text-center w-25 fw-bold">
+                            <p>Horas Trabalhadas:</p><br>${element.horas_trabalhadas}
+                            </div>
+
+                            <div class="border-2 p-2 w-25 text-center fw-bold">
+                            <p>Linhas de Código:</p><br>${element.linhas_codigo}
+                            </div>
+
+                            <div class="border-2 p-2 w-25 fw-bold text-center">
+                            <p>Bugs Corrigidos:</p><br>${element.bugs_corrigidos}
+                            </div>
+
+                            </div>
+
+                            </div>
+                            
+                            </div>
+                        `
+                        document.getElementById("get-log").innerHTML=logsHTML;
+                    }
+                }
+            }))
+            
         }
-        document.getElementById("card-user").innerHTML = metricasHTML;
     })
     .catch((error) => console.log("ERROR: ", error))
     
