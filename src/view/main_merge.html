@@ -41,14 +41,13 @@
                 </div>
             </div>
     
-            <div class="col-md-9 mt-3">
-                <div id="get-log">
+            <div class="log col-md-9 mt-3">
+                <div id="get-log ">
                     <div class="cria-log container d-flex justify-content-center mt-2">
-                        <button type="button" class="btn btn-primary w-50">+ Criar Log</button>
+                        <a href="cad_logs.html" class="btn btn-primary w-50">Cadastrar Log</a>
+                      </div>
+                      <div id="lerolero" class="container mt-3"></div>
                     </div>
-
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -102,26 +101,13 @@
       if (Array.isArray(data)) {
         for (const element of data) {
           logsHTML += `
-            <div class="log container-fluid">
-              <div class="row">
-                <div class="col-md-3 d-flex justify-content-center">
-                  <h5>ID Usuário: <br>${element.id_user}</h5>
-                </div>
-                <div class="col-md-9 mt-3 d-flex justify-content-between">
-                  <div class="border-2 p-2 text-center w-25 fw-bold">
-                    <p>Horas Trabalhadas:</p><br>${element.horas_trabalhadas}
-                  </div>
-                  <div class="border-2 p-2 w-25 text-center fw-bold">
-                    <p>Linhas de Código:</p><br>${element.linhas_codigo}
-                  </div>
-                  <div class="border-2 p-2 w-25 fw-bold text-center">
-                    <p>Bugs Corrigidos:</p><br>${element.bugs_corrigidos}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="post-log mb-5"> <p class='categoria'>
+                    <div class="cima-card d-flex justify-content-between"><h5>Id Log: ${element.id_user}</h5><h6 class="categoria-logs">${element.categoria}</h6> </div>
+                    <div class='mb-3 text-center d-flex justify-content-around'> <div class="dadinhos">${element.horas_trabalhadas}h <br> <p>horas trabalhadas</p></div> <div class="dadinhos">${element.linhas_codigo} <br> <p>linhas de codigo</p> </div> <div class="dadinhos"> ${element.bugs_corrigidos}<br> <p>bugs corrigido</p> </div></div>
+                    <div class="baixo-card"> <button><img src="../style/images/hearth.svg" alt="Like"> ${element.likes}</button> </button> <button> <img src="../style/images/comment.svg" alt="Comentário"> ${element.comment} </button></div>
+           </div>
           `;
-          document.getElementById("get-log").innerHTML = logsHTML;
+          document.getElementById("lerolero").innerHTML = logsHTML;
         }
       }
     

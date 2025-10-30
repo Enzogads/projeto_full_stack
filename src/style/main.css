@@ -36,8 +36,6 @@ body{
 
 main .log{
     background-color: rgb(243, 243, 243);;
-    width: 700px;
-    height: 250px;
     margin-top: 20px;
     border: 2px solid rgb(202, 202, 202);
     border-radius: 20px;
@@ -46,4 +44,37 @@ main .log{
 main .cardinhos{
     background-color: gray;
     border-bottom: 1px solid black;
+}
+
+main .post-log{
+    border: 2px gray solid;
+    border-radius: 20px;
+    padding: 5px;
+    background-color: aliceblue;
+}
+
+main .baixo-card button{
+    border: 2px gray solid;
+    background-color: aliceblue;
+    border-radius: 15px;
+    padding: 5px;
+
+
+}
+
+.cima-card{
+    border-bottom: 3px solid gray;
+    margin-bottom: 5px;
+}
+
+.cima-card h6,h5{
+    font-weight: bold;
+    padding: 5px;
+}
+
+.dadinhos{
+    background-color: gray;
+    color: aliceblue;
+    padding: 5px;
+    border-radius: 15px;
 }

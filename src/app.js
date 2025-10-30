@@ -144,7 +144,7 @@ app.get("/logs", async (req, res) => {
   const offset = pagina * quantidade
 
   const [results] = await pool.query(`
-   SELECT lgs.id, lgs.categoria, lgs.horas_trabalhadas, lgs.linhas_codigo, lgs.bugs_corrigidos, lgs.id_user, (devhub.like.id_log) AS likes FROM lgs 
+   SELECT lgs.id, lgs.categoria, lgs.horas_trabalhadas, lgs.linhas_codigo, lgs.bugs_corrigidos, lgs.id_user, (devhub.like.id_log) AS likes FROM lgs
 LEFT JOIN devhub.like
 ON devhub.like.id_log = devhub.lgs.id
 GROUP BY lgs.id, lgs.categoria, lgs.horas_trabalhadas, lgs.linhas_codigo, lgs.bugs_corrigidos, lgs.id_user
